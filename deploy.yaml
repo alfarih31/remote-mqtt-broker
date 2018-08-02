@@ -1,0 +1,58 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: remote-mqtt-broker
+  labels:
+    app: remote-mqtt-broker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: remote-mqtt-broker
+  template:
+    metadata:
+      name: remote-mqtt-broker
+      labels:
+        app: remote-mqtt-broker
+    spec:
+      containers:
+      - name: mqtt-broker
+        image: gcr.io/replus-162509/remote-mqtt-broker:v4
+        ports:
+        - containerPort: 1883
+          name: mqtt-tcp
+        - containerPort: 8883
+          name: mqtt-tcp-ssl
+        - containerPort: 1884
+          name: mqtt-ws
+        - containerPort: 8884
+          name: mqtt-ws-ssl
+      nodeSelector:
+        name: remote-mqtt-broker
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: remote-mqtt-broker
+spec:
+  type: LoadBalancer
+  selector:
+    app: remote-mqtt-broker
+  ports:
+  - name: mqtt-tcp
+    protocol: TCP
+    port: 1883
+    targetPort: 1883
+  - name: mqtt-tcp-ssl
+    protocol: TCP
+    port: 8883
+    targetPort: 8883
+  - name: mqtt-ws
+    protocol: TCP
+    port: 1884
+    targetPort: 1884
+  - name: mqtt-ws-ssl
+    protocol: TCP
+    port: 8884
+    targetPort: 8884

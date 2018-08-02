@@ -1,0 +1,6 @@
+user repluscore
+topic #
+
+pattern read %c/fromClient
+pattern write %c/toClient
+pattern write %c/button
