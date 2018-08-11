@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: remote-mqtt-broker
+spec:
+  type: LoadBalancer
+  selector:
+    app: remote-mqtt-broker
+  ports:
+  - name: mqtt-tcp
+    protocol: TCP
+    port: 1883
+    targetPort: 1883
+  - name: mqtt-tcp-ssl
+    protocol: TCP
+    port: 8883
+    targetPort: 8883
+  - name: mqtt-ws
+    protocol: TCP
+    port: 1884
+    targetPort: 1884
+  - name: mqtt-ws-ssl
+    protocol: TCP
+    port: 8884
+    targetPort: 8884
